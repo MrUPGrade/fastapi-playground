@@ -23,7 +23,7 @@ steps:
     image: postgres:11
     script: |
       sleep 5
-      cat sql/* | PGPASS=${POSTGRES_PASSWORD} psql -h db -U "${POSTGRES_USER}" -d "${POSTGRES_DB}"
+      cat sql/* |  PGPASSWORD=${POSTGRES_PASSWORD} psql -h db -U "${POSTGRES_USER}" -d "${POSTGRES_DB}"
     environment:
     - name: POSTGRES_DB
       value: testdb

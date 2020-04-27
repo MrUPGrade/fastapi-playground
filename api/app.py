@@ -1,7 +1,8 @@
 from fastapi import FastAPI
-from api.resources import users, health, posts
+
 from api import models
-from api.db import engine, get_db
+from api.db import engine
+from api.resources import users, health, posts
 
 models.Base.metadata.create_all(bind=engine)
 
