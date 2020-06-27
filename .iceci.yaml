@@ -14,7 +14,7 @@ services:
   - name: POSTGRES_PASSWORD
     value: dbpass
   - name: POSTGRES_USER
-    value: dbuser
+    value: user
 
 steps:
 # Loading the data into the DB
@@ -30,7 +30,7 @@ steps:
     - name: POSTGRES_PASSWORD
       value: dbpass
     - name: POSTGRES_USER
-      value: dbuser
+      value: user
 
 # Running the tests in python:3.7 container
 - name: run-tests
@@ -53,5 +53,5 @@ steps:
     user: mrupgrade
     imageName: fastapi-playground
     tags:
-    - "{{ ICE_BUILD_NUMBER }}"
+    - "{{ ICECI_BUILD_NUMBER }}"
     - latest
