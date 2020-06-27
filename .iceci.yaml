@@ -14,7 +14,7 @@ services:
   - name: POSTGRES_PASSWORD
     value: dbpass
   - name: POSTGRES_USER
-    value: dbuser
+    value: user
 
 steps:
 # Loading the data into the DB
@@ -23,14 +23,14 @@ steps:
     image: postgres:11
     script: |
       sleep 5
-      cat sql/* |  PGPASSWORD=${POSTGRES_PASSWORD} psql -h db -U "${POSTGRES_USER}" -d "${POSTGRES_DB}"
+      cat sql/db.sql |  PGPASSWORD=${POSTGRES_PASSWORD} psql -h db -U "${POSTGRES_USER}" -d "${POSTGRES_DB}"
     environment:
     - name: POSTGRES_DB
       value: testdb
     - name: POSTGRES_PASSWORD
       value: dbpass
     - name: POSTGRES_USER
-      value: dbuser
+      value: user
 
 # Running the tests in python:3.7 container
 - name: run-tests
@@ -42,7 +42,7 @@ steps:
       pytest tests
     environment:
     - name: DB_URI
-      value: "postgresql+psycopg2://dbuser:dbpass@db:5432/testdb"
+      value: "postgresql+psycopg2://user:dbpass@db:5432/testdb"
 
 # Building and pushing the docker image
 - name: build-docker-image
@@ -53,5 +53,5 @@ steps:
     user: mrupgrade
     imageName: fastapi-playground
     tags:
-    - "{{ ICE_BUILD_NUMBER }}"
+    - "{{ ICECI_BUILD_NUMBER }}"
     - latest
