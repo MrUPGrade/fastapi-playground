@@ -1,0 +1,17 @@
+# Pipeline for the IceCI continues integration
+# For more information visit:
+#  https://github.com/IceCI/IceCI
+#  https://iceci.io/
+# Documentation can be found at
+#  https://docs.iceci.io/
+
+
+steps:
+# Running the tests in python:3.7 container
+- name: run-tests
+  containerRun:
+    image: python:3.7
+    script: |
+      pip install -r requirements.txt
+      pip install -r requirements-test.txt
+      pytest tests/unit

@@ -4,8 +4,8 @@ Create and activate virtual env
 
 ```shell script
 python3.7 -m venv venv 
-pip install --upgrade pip
 source venv/bin/activate
+pip install --upgrade pip
 ```
 
 Install dependencies
@@ -24,5 +24,6 @@ docker-compose up -d
 Run the app
 
 ```shell script
+source env-dev.sh
 python -m api
 ```

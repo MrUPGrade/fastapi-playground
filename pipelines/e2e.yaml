@@ -1,0 +1,61 @@
+# Pipeline for the IceCI continues integration
+# For more information visit:
+#  https://github.com/IceCI/IceCI
+#  https://iceci.io/
+# Documentation can be found at
+#  https://docs.iceci.io/
+
+services:
+- name: db
+  image: postgres:11
+  environment:
+  - name: POSTGRES_DB
+    value: testdb
+  - name: POSTGRES_PASSWORD
+    value: dbpass
+  - name: POSTGRES_USER
+    value: user
+
+
+steps:
+# Building and pushing the docker image
+- name: build-docker-image
+  containerBuild:
+    dockerSecret: dockerhub
+    registry: docker.io
+    # TODO: change user and image name to repository that you have access to
+    user: mrupgrade
+    imageName: fastapi-playground
+    tags:
+    - "{{ ICECI_BUILD_NUMBER }}"
+    - "{{ ICECI_GIT_TAG_OR_BRANCH }}"
+
+
+- name: start-api
+  serviceRun:
+    name: api
+    image: "mrupgrade/fastapi-playground:{{ ICECI_BUILD_NUMBER }}"
+    environment:
+    - name: FA_DB_URI
+      value: "postgresql+psycopg2://user:dbpass@db:5432/testdb"
+
+
+# Running the tests in python:3.7 container
+- name: run-tests
+  containerRun:
+    image: python:3.7
+    script: |
+      pip install -r requirements.txt
+      pip install -r requirements-test.txt
+
+      export PYTHONPATH=$(pwd)
+      python api/cli.py db reflect
+
+      pytest tests/unit
+      pytest tests/e2e
+
+    environment:
+    - name: FA_DB_URI
+      value: "postgresql+psycopg2://user:dbpass@db:5432/testdb"
+    - name: FA_API_URL
+      value: "api:8000"

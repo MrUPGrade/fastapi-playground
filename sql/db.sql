@@ -2,30 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 11.7 (Debian 11.7-2.pgdg90+1)
--- Dumped by pg_dump version 11.7 (Debian 11.7-2.pgdg90+1)
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
---
--- Name: db; Type: DATABASE; Schema: -; Owner: user
---
-
-CREATE DATABASE db WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.utf8' LC_CTYPE = 'en_US.utf8';
-
-
-ALTER DATABASE db OWNER TO "user";
-
-\connect db
+-- Dumped from database version 11.8 (Debian 11.8-1.pgdg90+1)
+-- Dumped by pg_dump version 12.2 (Ubuntu 12.2-4)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -39,8 +17,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 SET default_tablespace = '';
-
-SET default_with_oids = false;
 
 --
 -- Name: posts; Type: TABLE; Schema: public; Owner: user
@@ -126,36 +102,6 @@ ALTER TABLE ONLY public.posts ALTER COLUMN id SET DEFAULT nextval('public.posts_
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
-
-
---
--- Data for Name: posts; Type: TABLE DATA; Schema: public; Owner: user
---
-
-INSERT INTO public.posts (id, title, content, "like", user_id) VALUES (1, 'title', 'content', 0, 1);
-
-
---
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: user
---
-
-INSERT INTO public.users (id, name, is_active) VALUES (1, 'John', true);
-INSERT INTO public.users (id, name, is_active) VALUES (2, 'Lily', true);
-INSERT INTO public.users (id, name, is_active) VALUES (3, 'NotActive', false);
-
-
---
--- Name: posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: user
---
-
-SELECT pg_catalog.setval('public.posts_id_seq', 1, true);
-
-
---
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: user
---
-
-SELECT pg_catalog.setval('public.users_id_seq', 3, true);
 
 
 --

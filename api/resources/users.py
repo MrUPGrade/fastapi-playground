@@ -8,7 +8,7 @@ from api.db import get_db
 router = APIRouter()
 
 
-class UserViewModel(BaseModel):
+class UserListViewModel(BaseModel):
     id: int
     name: str
 
@@ -22,8 +22,8 @@ class UserDetailsViewModel(BaseModel):
     post_count: int
 
 
-@router.get("/", response_model=List[UserViewModel])
-def list_users(db: Session = Depends(get_db)) -> List[UserViewModel]:
+@router.get("/", response_model=List[UserListViewModel])
+def list_users(db: Session = Depends(get_db)) -> List[UserListViewModel]:
     users = db.query(models.User).filter(models.User.is_active == True).all()
     return users
 

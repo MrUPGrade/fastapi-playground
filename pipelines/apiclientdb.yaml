@@ -4,8 +4,6 @@
 #  https://iceci.io/
 # Documentation can be found at
 #  https://docs.iceci.io/
-# Service with postgres will run during whole pipeline
-
 
 services:
 - name: db
@@ -18,23 +16,8 @@ services:
   - name: POSTGRES_USER
     value: user
 
+
 steps:
-# Loading the data into the DB
-- name: load-db-data
-  containerRun:
-    image: postgres:11
-    script: |
-      sleep 5
-      cat sql/db.sql |  PGPASSWORD=${POSTGRES_PASSWORD} psql -h db -U "${POSTGRES_USER}" -d "${POSTGRES_DB}"
-    environment:
-    - name: POSTGRES_DB
-      value: testdb
-    - name: POSTGRES_PASSWORD
-      value: dbpass
-    - name: POSTGRES_USER
-      value: user
-
-
 # Running the tests in python:3.7 container
 - name: run-tests
   containerRun:
@@ -42,10 +25,13 @@ steps:
     script: |
       pip install -r requirements.txt
       pip install -r requirements-test.txt
-      pytest tests
+      export PYTHONPATH=$(pwd)
+      python api/cli.py db reflect
+      pytest tests/unit tests/apiclientnodb tests/apiclientdb
     environment:
-    - name: DB_URI
+    - name: FA_DB_URI
       value: "postgresql+psycopg2://user:dbpass@db:5432/testdb"
+
 
 
 # Building and pushing the docker image
@@ -58,4 +44,4 @@ steps:
     imageName: fastapi-playground
     tags:
     - "{{ ICECI_BUILD_NUMBER }}"
-    - latest
+    - "{{ ICECI_GIT_TAG_OR_BRANCH }}"
