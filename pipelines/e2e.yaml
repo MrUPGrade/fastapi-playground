@@ -28,7 +28,7 @@ steps:
     imageName: fastapi-playground
     tags:
     - "{{ ICECI_BUILD_NUMBER }}"
-    - "{{ ICECI_GIT_TAG_OR_BRANCH }}"
+    - "{{ ICECI_GIT_EVENT_NAME }}"
 
 
 - name: start-api
