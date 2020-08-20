@@ -27,13 +27,13 @@ steps:
     user: mrupgrade
     imageName: fastapi-playground
     tags:
-    - "{{ ICECI_BUILD_NUMBER }}"
+    - "latest"
 
 
 - name: start-api
   serviceRun:
     name: api
-    image: "mrupgrade/fastapi-playground:{{ ICECI_BUILD_NUMBER }}"
+    image: "mrupgrade/fastapi-playground:latest"
     environment:
     - name: FA_DB_URI
       value: "postgresql+psycopg2://user:dbpass@db:5432/testdb"
